@@ -8,3 +8,5 @@
 extern crate std;
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
+
+unsafe impl Send for pxtnService {}
