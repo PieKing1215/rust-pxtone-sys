@@ -4,6 +4,7 @@ description = "Low level bindings to pxtone for Rust"
 repository = "https://github.com/PieKing1215/rust-pxtone-sys"
 version = "0.1.0"
 authors = ["PieKing1215"]
+license = "MIT OR Apache-2.0"
 links = "pxtone"
 build = "src/build.rs"
 edition = "2018"
