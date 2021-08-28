@@ -87,6 +87,7 @@ fn main() {
 
         let err_fn = |err| eprintln!("an error occurred on stream: {}", err);
 
+        let sample_rate = config.sample_rate().0;
         let stream = device.build_output_stream(
             &config.into(),
             move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
@@ -96,8 +97,8 @@ fn main() {
         ).expect("Failed to start audio stream");
         stream.play().expect("Failed to play audio");
 
-        println!("Sleeping for {:.2}s", sn as f64 / 48000.0);
-        std::thread::sleep(std::time::Duration::from_secs_f64(sn as f64 / 48000.0));
+        println!("Sleeping for {:.2}s", sn as f64 / sample_rate as f64);
+        std::thread::sleep(std::time::Duration::from_secs_f64(sn as f64 / sample_rate as f64));
         println!("Done!");
 
     }
