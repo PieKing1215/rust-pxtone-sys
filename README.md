@@ -1,5 +1,6 @@
 <h1>rust-pxtone-sys<br>
   <a href="https://github.com/PieKing1215/rust-pxtone-sys/actions/workflows/rust_build_test.yml"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/PieKing1215/rust-pxtone-sys/Rust%20Build+Test"></a>
+  <a href="https://crates.io/crates/pxtone-sys"><img alt="Crates.io" src="https://img.shields.io/crates/v/pxtone-sys"></a>
 </h1>
 Low level bindings to pxtone for Rust
 
