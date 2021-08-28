@@ -207,7 +207,6 @@ pxtnERR pxtnPulse_Oggv::Decode( pxtnPulse_PCM * p_pcm ) const
     vi    = ov_info( &vf,-1 );
 	
 	int32_t current_section;
-	char    pcmout[ 4096 ] = {0}; //take 4k out of the data segment, not the stack
 	{
 		int32_t smp_num = (int32_t)ov_pcm_total( &vf, -1 );
 		uint32_t bytes;
@@ -219,6 +218,7 @@ pxtnERR pxtnPulse_Oggv::Decode( pxtnPulse_PCM * p_pcm ) const
 	}
     // decode..
 	{
+		char    pcmout[ 4096 ] = {0}; //take 4k out of the data segment, not the stack
 		int32_t ret = 0;
 		uint8_t  *p  = (uint8_t*)p_pcm->get_p_buf_variable();
 		do
