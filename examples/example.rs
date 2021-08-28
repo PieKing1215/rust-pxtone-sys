@@ -54,7 +54,7 @@ fn main() {
             meas_repeat: 0,
             fadein_sec: 0.0,
             flags: 0,
-            master_volume: 1.0,
+            master_volume: 0.5,
         };
 
         if !serv.moo_preparation(&prep) {
