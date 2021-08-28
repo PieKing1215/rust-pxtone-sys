@@ -1,6 +1,5 @@
 fn main() {
     let src = [
-        "pxtone/pxtone.cpp",
         "ogg/bitwise.c",
         "ogg/framing.c",
         "ogg/vorbisfile.c",
@@ -26,12 +25,24 @@ fn main() {
 
     let mut builder = cc::Build::new();
     let build = builder
+        .files(src.iter())
+        .include("ogg")
+        .flag_if_supported("-fpermissive");
+    
+    build.compile("vorbis");
+
+    let src = [
+        "pxtone/pxtone.cpp",
+    ];
+
+    let mut builder = cc::Build::new();
+    let build = builder
         .cpp(true)
         .files(src.iter())
         .include("ogg")
         .include("pxtone")
         .define("pxINCLUDE_OGGVORBIS", None)
         .flag_if_supported("-fpermissive");
-        
+    
     build.compile("pxtone");
 }
