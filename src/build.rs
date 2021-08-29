@@ -4,7 +4,9 @@ extern crate bindgen;
 
 fn main() {
 
-    println!("cargo:rerun-if-changed=wrapper.h");
+    println!("cargo:rerun-if-changed=src/wrapper.hpp");
+    println!("cargo:rerun-if-changed=pxtone/");
+    println!("cargo:rerun-if-changed=ogg/");
 
     let bindings = bindgen::Builder::default()
         .header("src/wrapper.hpp")
