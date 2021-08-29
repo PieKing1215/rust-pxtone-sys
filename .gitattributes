@@ -1,2 +1,3 @@
 ogg/** linguist-vendored
 pxtone/** linguist-vendored
+*.cpp linguist-vendored
