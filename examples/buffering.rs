@@ -106,17 +106,16 @@ fn main() {
         println!("Done!");
 
     }
+}
 
-    fn write_data<T>(output: &mut [T], channels: usize, next_sample: &mut dyn FnMut() -> f32)
-    where
-        T: cpal::Sample,
-    {
-        let n = output.chunks_mut(channels);
-        for frame in n {
-            for sample in frame.iter_mut() {
-                let value: T = cpal::Sample::from::<f32>(&next_sample());
-                *sample = value;
-            }
+fn write_data<T>(output: &mut [T], channels: usize, next_sample: &mut dyn FnMut() -> f32)
+where T: cpal::Sample,
+{
+    let n = output.chunks_mut(channels);
+    for frame in n {
+        for sample in frame.iter_mut() {
+            let value: T = cpal::Sample::from::<f32>(&next_sample());
+            *sample = value;
         }
     }
 }
