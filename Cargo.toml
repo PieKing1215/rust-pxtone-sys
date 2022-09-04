@@ -17,7 +17,7 @@ libc = "0.2"
 
 [build-dependencies]
 cc = { version = "1.0", features = ["parallel"] }
-bindgen = "0.59"
+bindgen = "0.60"
 
 [dev-dependencies]
 cpal = "0.13"

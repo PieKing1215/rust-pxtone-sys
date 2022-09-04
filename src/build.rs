@@ -70,7 +70,7 @@ fn main() {
         .files(src.iter())
         .include("ogg")
         .include("pxtone")
-        .define("pxINCLUDE_OGGVORBIS", None)
+        .define("pxINCLUDE_OGGVORBIS", "1")
         .flag_if_supported("-fpermissive");
     
     build.compile("pxtone");
