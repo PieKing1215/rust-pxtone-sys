@@ -8,6 +8,9 @@ Low level bindings to pxtone for Rust
 Run `cargo run --release --example example` for a demo.<br>
 See [examples/](examples/) for sample code.
 
+This project does basically nothing other than generate bindings for the original pxtone library.<br>
+For high-level bindings, see [rust-pxtone](https://github.com/PieKing1215/rust-pxtone).
+
 ## License
 
 [pxtone source code (in pxtone/)](https://pxtone.org/developer/) © [STUDIO PIXEL](https://studiopixel.jp)
