@@ -10,7 +10,7 @@ keywords = ["pxtone", "audio", "bindings", "parsing"]
 categories = ["external-ffi-bindings", "multimedia::audio", "parser-implementations"]
 links = "pxtone"
 build = "src/build.rs"
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 libc = "0.2"
