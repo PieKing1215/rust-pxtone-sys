@@ -2,7 +2,6 @@
 use std::ffi::CStr;
 
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
-use libc::c_void;
 use pxtone_sys::{pxtnDescriptor, pxtnError_get_string, pxtnService, pxtnVOMITPREPARATION};
 
 fn main() {
@@ -30,7 +29,7 @@ fn main() {
         let bytes = include_bytes!("sample.ptcop");
 
         println!("Loading {} bytes", bytes.len());
-        descriptor.set_memory_r(bytes as *const _ as *mut c_void, bytes.len() as i32);
+        descriptor.set_memory_r(bytes as *const _ as *mut _, bytes.len() as i32);
 
         match serv.read(&mut descriptor) {
             0 => {}
@@ -67,7 +66,7 @@ fn main() {
         let mut mem: Vec<i16> = vec![0; sn as usize * 2];
 
         // moo
-        if !serv.Moo(mem.as_mut_ptr() as *mut _ as *mut c_void, mem.len() as i32 * 2) {
+        if !serv.Moo(mem.as_mut_ptr() as *mut _ as *mut _, mem.len() as i32 * 2) {
             panic!("serv.Moo() failed");
         }
 
