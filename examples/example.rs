@@ -1,4 +1,3 @@
-
 use std::ffi::CStr;
 
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
@@ -8,8 +7,13 @@ fn main() {
     unsafe {
         // set up audio device
         let host = cpal::default_host();
-        let device = host.default_output_device().expect("failed to find output device");
-        println!("Output device: {}", device.name().unwrap_or("unknown".to_string()));
+        let device = host
+            .default_output_device()
+            .expect("failed to find output device");
+        println!(
+            "Output device: {}",
+            device.name().unwrap_or("unknown".to_string())
+        );
 
         let config = device.default_output_config().unwrap();
 
@@ -18,8 +22,11 @@ fn main() {
         let mut descriptor = pxtnDescriptor::new();
 
         match serv.init() {
-            0 => {}
-            n => panic!("{}", CStr::from_ptr(pxtnError_get_string(n)).to_str().unwrap()),
+            0 => {},
+            n => panic!(
+                "{}",
+                CStr::from_ptr(pxtnError_get_string(n)).to_str().unwrap()
+            ),
         }
         if !serv.set_destination_quality(config.channels() as i32, config.sample_rate().0 as i32) {
             panic!("serv.set_destination_quality() failed");
@@ -32,12 +39,18 @@ fn main() {
         descriptor.set_memory_r(bytes as *const _ as *mut _, bytes.len() as i32);
 
         match serv.read(&mut descriptor) {
-            0 => {}
-            n => panic!("{}", CStr::from_ptr(pxtnError_get_string(n)).to_str().unwrap()),
+            0 => {},
+            n => panic!(
+                "{}",
+                CStr::from_ptr(pxtnError_get_string(n)).to_str().unwrap()
+            ),
         }
         match serv.tones_ready() {
-            0 => {}
-            n => panic!("{}", CStr::from_ptr(pxtnError_get_string(n)).to_str().unwrap()),
+            0 => {},
+            n => panic!(
+                "{}",
+                CStr::from_ptr(pxtnError_get_string(n)).to_str().unwrap()
+            ),
         }
 
         // print some info
@@ -59,7 +72,10 @@ fn main() {
         if !serv.moo_preparation(&prep) {
             panic!("serv.moo_preparation() failed");
         }
-        println!("serv.moo_get_total_sample() = {}", serv.moo_get_total_sample());
+        println!(
+            "serv.moo_get_total_sample() = {}",
+            serv.moo_get_total_sample()
+        );
         let mut sn = serv.moo_get_total_sample();
         sn = sn - (sn % 4);
         println!("sn = {}", sn);
@@ -87,24 +103,28 @@ fn main() {
         let err_fn = |err| eprintln!("an error occurred on stream: {}", err);
 
         let sample_rate = config.sample_rate().0;
-        let stream = device.build_output_stream(
-            &config.into(),
-            move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
-                write_data(data, 2, &mut next_value)
-            },
-            err_fn,
-        ).expect("Failed to start audio stream");
+        let stream = device
+            .build_output_stream(
+                &config.into(),
+                move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
+                    write_data(data, 2, &mut next_value)
+                },
+                err_fn,
+            )
+            .expect("Failed to start audio stream");
         stream.play().expect("Failed to play audio");
 
         println!("Sleeping for {:.2}s", sn as f64 / sample_rate as f64);
-        std::thread::sleep(std::time::Duration::from_secs_f64(sn as f64 / sample_rate as f64));
+        std::thread::sleep(std::time::Duration::from_secs_f64(
+            sn as f64 / sample_rate as f64,
+        ));
         println!("Done!");
-
     }
 }
 
 fn write_data<T>(output: &mut [T], channels: usize, next_sample: &mut dyn FnMut() -> f32)
-where T: cpal::Sample,
+where
+    T: cpal::Sample,
 {
     let n = output.chunks_mut(channels);
     for frame in n {
