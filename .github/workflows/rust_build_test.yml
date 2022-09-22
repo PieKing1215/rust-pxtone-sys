@@ -54,6 +54,8 @@ jobs:
         directory: ${{ runner.temp }}/llvm
     - name: Set LIBCLANG_PATH
       run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
+    - name: Install wasm32-unknown-emscripten target
+      run: rustup target add wasm32-unknown-emscripten --toolchain stable
     - name: Build
       run: cargo build --target=wasm32-unknown-emscripten --verbose
     - name: Run tests
@@ -69,6 +71,8 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install libasound2-dev
+    - name: Install wasm32-unknown-emscripten target
+      run: rustup target add wasm32-unknown-emscripten --toolchain stable
     - name: Build
       run: cargo build --target=wasm32-unknown-emscripten --verbose
     - name: Run tests
