@@ -5,7 +5,7 @@ fn main() {
     println!("cargo:rerun-if-changed=src/wrapper.hpp");
     println!("cargo:rerun-if-changed=pxtone/");
     println!("cargo:rerun-if-changed=ogg/");
-
+    
     let pxtone = thread::spawn(|| {
         let src = [
             "pxtone/pxtone.cpp",
@@ -23,27 +23,31 @@ fn main() {
         build.compile("pxtone");
     });
 
-    let bindings = thread::spawn(|| {
-        let bindings = bindgen::Builder::default()
-            .header("src/wrapper.hpp")
-            .blocklist_item("FP_INT_UPWARD")
-            .blocklist_item("FP_INT_DOWNWARD")
-            .blocklist_item("FP_INT_TOWARDZERO")
-            .blocklist_item("FP_INT_TONEARESTFROMZERO")
-            .blocklist_item("FP_INT_TONEAREST")
-            .blocklist_item("FP_INT_DOWNWARD")
-            .blocklist_item("FP_NAN")
-            .blocklist_item("FP_INFINITE")
-            .blocklist_item("FP_ZERO")
-            .blocklist_item("FP_SUBNORMAL")
-            .blocklist_item("FP_NORMAL")
-            .parse_callbacks(Box::new(bindgen::CargoCallbacks))
-            .generate()
-            .expect("Unable to generate bindings");
+    let bindings = if let Ok("wasm32-unknown-emscripten") = env::var("TARGET").as_ref().map(|s| s.as_str()) {
+        None
+    } else {
+        Some(thread::spawn(|| {
+            let bindings = bindgen::Builder::default()
+                .header("src/wrapper.hpp")
+                .blocklist_item("FP_INT_UPWARD")
+                .blocklist_item("FP_INT_DOWNWARD")
+                .blocklist_item("FP_INT_TOWARDZERO")
+                .blocklist_item("FP_INT_TONEARESTFROMZERO")
+                .blocklist_item("FP_INT_TONEAREST")
+                .blocklist_item("FP_INT_DOWNWARD")
+                .blocklist_item("FP_NAN")
+                .blocklist_item("FP_INFINITE")
+                .blocklist_item("FP_ZERO")
+                .blocklist_item("FP_SUBNORMAL")
+                .blocklist_item("FP_NORMAL")
+                .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+                .generate()
+                .expect("Unable to generate bindings");
 
-        let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
-        bindings.write_to_file(out_path.join("bindings.rs")).expect("Couldn't write bindings!");
-    });
+            let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+            bindings.write_to_file(out_path.join("bindings.rs")).expect("Couldn't write bindings!");
+        }))
+    };
 
     let src = [
         "ogg/bitwise.c",
@@ -77,6 +81,9 @@ fn main() {
     
     build.compile("vorbis");
 
-    bindings.join().unwrap();
+    if let Some(bindings) = bindings {
+        bindings.join().unwrap();   
+    }
+
     pxtone.join().unwrap();
 }
