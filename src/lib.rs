@@ -5,6 +5,8 @@
 #![allow(improper_ctypes)]
 #![no_std]
 
+#![recursion_limit="500"]
+
 extern crate std;
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
