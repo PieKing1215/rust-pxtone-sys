@@ -5,7 +5,7 @@
 #![allow(improper_ctypes)]
 #![no_std]
 
-#![recursion_limit="500"]
+#![recursion_limit="1500"]
 
 extern crate std;
 
