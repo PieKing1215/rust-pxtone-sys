@@ -7,10 +7,6 @@
 
 extern crate std;
 
-#[cfg(not(target_arch="wasm32"))]
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
-
-#[cfg(target_arch="wasm32")]
-include!("bindings.rs");
 
 unsafe impl Send for pxtnService {}
