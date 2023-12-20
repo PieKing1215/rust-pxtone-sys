@@ -73,3 +73,4 @@ jobs:
       run: rustup target add wasm32-unknown-emscripten --toolchain stable
     - name: Build
       run: cargo build --target=wasm32-unknown-emscripten --verbose
+      
