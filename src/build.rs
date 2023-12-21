@@ -48,7 +48,7 @@ fn main() {
                         .as_str(),
                     ])
                     .clang_arg("-fvisibility=default")
-                    .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+                    .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
                     .generate()
                     .expect("Unable to generate bindings");
 
@@ -72,7 +72,7 @@ fn main() {
                     .blocklist_item("FP_ZERO")
                     .blocklist_item("FP_SUBNORMAL")
                     .blocklist_item("FP_NORMAL")
-                    .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+                    .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
                     .generate()
                     .expect("Unable to generate bindings");
 

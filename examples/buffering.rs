@@ -111,6 +111,7 @@ fn main() {
                     write_data(data, 2, &mut next_value)
                 },
                 err_fn,
+                None,
             )
             .expect("Failed to start audio stream");
         stream.play().expect("Failed to play audio");
@@ -128,12 +129,12 @@ fn main() {
 
 fn write_data<T>(output: &mut [T], channels: usize, next_sample: &mut dyn FnMut() -> f32)
 where
-    T: cpal::Sample,
+    T: cpal::Sample + cpal::FromSample<f32>,
 {
     let n = output.chunks_mut(channels);
     for frame in n {
         for sample in frame.iter_mut() {
-            let value: T = cpal::Sample::from::<f32>(&next_sample());
+            let value: T = T::from_sample(next_sample());
             *sample = value;
         }
     }
