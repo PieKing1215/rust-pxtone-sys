@@ -38,6 +38,8 @@ fn main() {
                     .blocklist_item("FP_SUBNORMAL")
                     .blocklist_item("FP_NORMAL")
                     .blocklist_item("std::value")
+                    .blocklist_item("__gnu_cxx::__min")
+                    .blocklist_item("__gnu_cxx::__max")
                     .opaque_type("std::.*")
                     .clang_args([
                         "--sysroot",
@@ -72,6 +74,9 @@ fn main() {
                     .blocklist_item("FP_ZERO")
                     .blocklist_item("FP_SUBNORMAL")
                     .blocklist_item("FP_NORMAL")
+                    .blocklist_item("std::value")
+                    .blocklist_item("__gnu_cxx::__min")
+                    .blocklist_item("__gnu_cxx::__max")
                     .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
                     .generate()
                     .expect("Unable to generate bindings");
